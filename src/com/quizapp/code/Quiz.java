@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
 
 public class Quiz implements ActionListener{
 	String[] questions =  { "Which company created java?",
@@ -180,7 +179,6 @@ public class Quiz implements ActionListener{
 	}
 	
 	public void nextQuestion() {
-		System.out.println(index);
 		if(index >= totalQuestions) {
 			results();
 		} else {
@@ -277,7 +275,24 @@ public class Quiz implements ActionListener{
 	
 	
 	public void results(){
+		buttonA.setEnabled(false);
+		buttonB.setEnabled(false);
+		buttonC.setEnabled(false);
+		buttonD.setEnabled(false);
 		
+		result = (int)(correctedGuesses /(double) totalQuestions * 100);
+		textField.setText("RESULTS");
+		textArea.setText("");
+		answerLabelA.setText("");
+		answerLabelB.setText("");
+		answerLabelC.setText("");
+		answerLabelD.setText("");
+		
+		numberRight.setText(correctedGuesses+ "/" + totalQuestions);
+		percentage.setText(result+"%");
+		
+		frame.add(numberRight);
+		frame.add(percentage);
 	}
 	
 	
