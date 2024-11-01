@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
 
 public class Quiz implements ActionListener{
 	String[] questions =  { "Which company created java?",
@@ -20,6 +21,7 @@ public class Quiz implements ActionListener{
 	char[] answers = {'D', 'C', 'C', 'B'};
 	int guess;
 	char answer;
+	int index;
 	int correctedGuesses;
 	int totalQuestions = questions.length;
 	int result;
@@ -140,7 +142,24 @@ public class Quiz implements ActionListener{
 		timerLabel.setText("TIMER >:D");
 		
 		
+		numberRight.setBounds(225, 225, 200, 100);
+		numberRight.setBackground(new Color(25, 25, 25));
+		numberRight.setForeground(new Color(25, 255, 0));
+		numberRight.setFont(new Font("Ink Free", Font.BOLD, 50));
+		numberRight.setBorder(BorderFactory.createBevelBorder(1));
+		numberRight.setHorizontalAlignment(JTextField.CENTER);
+		numberRight.setEditable(false);
 		
+		
+		percentage.setBounds(225, 325, 200, 100);
+		percentage.setBackground(new Color(25, 25, 25));
+		percentage.setForeground(new Color(25, 255, 0));
+		percentage.setFont(new Font("Ink Free", Font.BOLD, 50));
+		percentage.setBorder(BorderFactory.createBevelBorder(1));
+		percentage.setHorizontalAlignment(JTextField.CENTER);
+		percentage.setEditable(false);
+		
+
 		
 		frame.add(textField);
 		frame.add(textArea);
@@ -156,19 +175,76 @@ public class Quiz implements ActionListener{
 		frame.add(timerLabel);
 		
 		frame.setVisible(true);
+		
+		nextQuestion();
 	}
 	
 	public void nextQuestion() {
-		
+		System.out.println(index);
+		if(index >= totalQuestions) {
+			results();
+		} else {
+			textField.setText("Question " + (index + 1));
+			textArea.setText(questions[index]);
+			answerLabelA.setText(options[index][0]);
+			answerLabelB.setText(options[index][1]);
+			answerLabelC.setText(options[index][2]);
+			answerLabelD.setText(options[index][3]);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		buttonA.setEnabled(false);
+		buttonB.setEnabled(false);
+		buttonC.setEnabled(false);
+		buttonD.setEnabled(false);
 		
+		if(e.getSource() == buttonA) {
+			answer = 'A';
+				if(answer == answers[index]) {
+					correctedGuesses++;
+				}
+		}else if(e.getSource() == buttonB) {
+			answer = 'B';
+				if(answer == answers[index]) {
+					correctedGuesses++;
+				}
+		} else if(e.getSource() == buttonC) {
+			answer = 'C';
+				if(answer == answers[index]) {
+					correctedGuesses++;
+				}
+		} else if(e.getSource() == buttonD) {
+			answer = 'D';
+				if(answer == answers[index]) {
+					correctedGuesses++;
+				}
+		}
+		
+		displayAnswer();
 	}
 	
+	
 	public void displayAnswer() {
+		buttonA.setEnabled(false);
+		buttonB.setEnabled(false);
+		buttonC.setEnabled(false);
+		buttonD.setEnabled(false);
+		
+		if(answers[index] != 'A') {
+			answerLabelA.setForeground(new Color(255, 0, 0));
+		}
+		if(answers[index] != 'B') {
+			answerLabelB.setForeground(new Color(255, 0, 0));
+		}
+		if(answers[index] != 'C') {
+			answerLabelC.setForeground(new Color(255, 0, 0));
+		}
+		if(answers[index] != 'D') {
+			answerLabelD.setForeground(new Color(255, 0, 0));
+		}
+		
 		
 	}
 	
