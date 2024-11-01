@@ -245,7 +245,34 @@ public class Quiz implements ActionListener{
 			answerLabelD.setForeground(new Color(255, 0, 0));
 		}
 		
+		// this will be called after validation to pause before moving to the next question
+		//set the disabled buttons enabled
+		//resets the label color to green
+		//increment index and call nextQuestion()
 		
+		Timer pause = new Timer(2000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				answerLabelA.setForeground(new Color(25, 255, 0));
+				answerLabelB.setForeground(new Color(25, 255, 0));
+				answerLabelC.setForeground(new Color(25, 255, 0));
+				answerLabelD.setForeground(new Color(25, 255, 0));
+				
+				answer = ' ';
+				seconds = 10;
+				secondsLeft.setText(String.valueOf(seconds));
+				
+				buttonA.setEnabled(true);
+				buttonB.setEnabled(true);
+				buttonC.setEnabled(true);
+				buttonD.setEnabled(true);
+				index++;
+				nextQuestion();
+			}
+			
+		});
+		pause.setRepeats(false);
+		pause.start();
 	}
 	
 	
