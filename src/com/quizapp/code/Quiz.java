@@ -3,23 +3,23 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class Quiz implements ActionListener{
 	String[] questions =  { "Which company created java?",
-   						    "Which year was java created?",
+   						    "Which year was java released?",
 						    "What was Java originally called?",
 						    "Who owns Java now?"
 						  };
 	String[][] options ={
 						 {"Apple", "Microsoft", "Oracle", "Sun MicroSystems"},
-						 {"1975", "1989", "1996", "1972"},
+						 {"1975", "1989", "1995", "1972"},
 						 {"Apple", "Latte", "Oak", "Koffing"},
 						 { "Microsoft", "Oracle","Google", "Sun MicroSystems"}
 						};
 	
 	char[] answers = {'D', 'C', 'C', 'B'};
 	int guess;
-	char answer;
 	int index;
 	int correctedGuesses;
 	int totalQuestions = questions.length;
@@ -89,26 +89,27 @@ public class Quiz implements ActionListener{
 		textArea.setEnabled(false);
 		textArea.setDisabledTextColor(new Color(25, 255, 0));
 		
-		buttonA.setBounds(0, 100, 100, 100);
+		buttonA.setBounds(10, 110, 80, 80);
 		buttonA.setFont(new Font("MV Boli", Font.BOLD, 35));
+//		buttonA.setMargin(new Insets(10, 0, 10, 0));
 		buttonA.setFocusable(false);
 		buttonA.addActionListener(this);
 		buttonA.setText("A");
 		
 		
-		buttonB.setBounds(0, 200, 100, 100);
+		buttonB.setBounds(10, 210, 80, 80);
 		buttonB.setFont(new Font("MV Boli", Font.BOLD, 35));
 		buttonB.setFocusable(false);
 		buttonB.addActionListener(this);
 		buttonB.setText("B");
 		
-		buttonC.setBounds(0, 300, 100, 100);
+		buttonC.setBounds(10, 310, 80, 80);
 		buttonC.setFont(new Font("MV Boli", Font.BOLD, 35));
 		buttonC.setFocusable(false);
 		buttonC.addActionListener(this);
 		buttonC.setText("C");
 		
-		buttonD.setBounds(0, 400, 100, 100);
+		buttonD.setBounds(10, 410, 80, 80);
 		buttonD.setFont(new Font("MV Boli", Font.BOLD, 35));
 		buttonD.setFocusable(false);
 		buttonD.addActionListener(this);
@@ -139,9 +140,9 @@ public class Quiz implements ActionListener{
 		secondsLeft.setBounds(535, 510, 100, 100);
 		secondsLeft.setBackground(new Color(25, 25, 25));
 		secondsLeft.setForeground(new Color(255, 0, 0));
-		secondsLeft.setFont(new Font("Ink free", Font.BOLD, 60));
-		secondsLeft.setBorder(BorderFactory.createBevelBorder(2));
-		secondsLeft.setOpaque(true);
+		secondsLeft.setFont(new Font("Times New Roman", Font.BOLD, 60));
+		secondsLeft.setBorder(new CircularBorder(5));
+//		secondsLeft.setOpaque(true);
 		secondsLeft.setHorizontalAlignment(JTextField.CENTER);
 		secondsLeft.setText(String.valueOf(seconds));
 		
@@ -212,25 +213,21 @@ public class Quiz implements ActionListener{
 		buttonD.setEnabled(false);
 		
 		if(e.getSource() == buttonA) {
-			answer = 'A';
-				if(answer == answers[index]) {
+				if(answers[index] == 'A') {
 					correctedGuesses++;
 				}
 		}else if(e.getSource() == buttonB) {
-			answer = 'B';
-				if(answer == answers[index]) {
+				if(answers[index] == 'B') {
 					correctedGuesses++;
 				}
 		} else if(e.getSource() == buttonC) {
-			answer = 'C';
-				if(answer == answers[index]) {
-					correctedGuesses++;
-				}
+			if(answers[index] == 'C') {
+				correctedGuesses++;
+			}
 		} else if(e.getSource() == buttonD) {
-			answer = 'D';
-				if(answer == answers[index]) {
-					correctedGuesses++;
-				}
+			if(answers[index] == 'D') {
+				correctedGuesses++;
+			}
 		}
 		
 		displayAnswer();
@@ -272,7 +269,7 @@ public class Quiz implements ActionListener{
 				answerLabelC.setForeground(new Color(25, 255, 0));
 				answerLabelD.setForeground(new Color(25, 255, 0));
 				
-				answer = ' ';
+
 				seconds = 10;
 				secondsLeft.setText(String.valueOf(seconds));
 				
@@ -291,25 +288,63 @@ public class Quiz implements ActionListener{
 	
 	
 	public void results(){
-		buttonA.setEnabled(false);
-		buttonB.setEnabled(false);
-		buttonC.setEnabled(false);
-		buttonD.setEnabled(false);
+		frame.remove(answerLabelA);
+		frame.remove(answerLabelB);
+		frame.remove(answerLabelC);
+		frame.remove(answerLabelD);
+		frame.remove(buttonA);
+		frame.remove(buttonB);
+		frame.remove(buttonC);
+		frame.remove(buttonD);
+		
+		
 		
 		result = (int)(correctedGuesses /(double) totalQuestions * 100);
 		textField.setText("RESULTS");
 		textArea.setText("");
-		answerLabelA.setText("");
-		answerLabelB.setText("");
-		answerLabelC.setText("");
-		answerLabelD.setText("");
 		
 		numberRight.setText(correctedGuesses+ "/" + totalQuestions);
 		percentage.setText(result+"%");
 		
+		secondsLeft.setText("0");
+		
 		frame.add(numberRight);
 		frame.add(percentage);
+		
+		
+		// Refresh frame
+//	    frame.revalidate();
+	    frame.repaint();
+//	    frame.setVisible(true);
 	}
 	
 	
 }
+class CircularBorder implements Border {
+    private int thickness;
+
+    public CircularBorder(int thickness) {
+        this.thickness = thickness;
+    }
+
+    @Override
+    public boolean isBorderOpaque() {
+        return false;
+    }
+
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED); 
+        g2d.setStroke(new BasicStroke(thickness));
+        g2d.drawOval(x + thickness / 2, y + thickness / 2, width - thickness, height - thickness);
+    }
+
+    @Override
+    public Insets getBorderInsets(Component c) {
+        return new Insets(thickness, thickness, thickness, thickness); // Return insets to accommodate the border thickness
+    }
+}
+
+
+
